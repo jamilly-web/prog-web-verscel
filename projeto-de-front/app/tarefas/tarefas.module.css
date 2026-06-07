@@ -1,0 +1,145 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f3f4f6; /* Mesmo fundo padrão */
+  padding: 40px 20px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.backLink {
+  align-self: flex-start;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto 16px auto;
+  color: #4b5563;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: #1f2937;
+}
+
+.card {
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 600px; /* Um pouco mais largo para a lista caber bem */
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.statusText {
+  font-size: 13px;
+  font-weight: 400;
+  color: #9ca3af;
+  background-color: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.errorBanner {
+  background-color: #fef2f2;
+  border-left: 4px solid #ef4444;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.errorText {
+  margin: 0;
+  color: #991b1b;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.buttonAdd {
+  padding: 12px 24px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.buttonAdd:hover {
+  background-color: #2563eb;
+}
+
+.buttonAdd:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0;
+  border-top: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #4b5563;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.taskList {
+  list-style: none; /* Remove as bolinhas/números padrões feios */
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
