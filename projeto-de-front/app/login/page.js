@@ -1,10 +1,12 @@
-"use client";
+""use client";
 
 import { userLogin } from "@/api";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStorage } from "@/zustand";
+// Importando o arquivo CSS Module
+import styles from "./login.module.css"; 
 
 export default function Login() {
   const router = useRouter();
@@ -13,6 +15,7 @@ export default function Login() {
     username: "",
     password: "",
   });
+  
   const loginMutation = useMutation({
     mutationFn: userLogin,
     onSuccess: (data) => {
@@ -39,33 +42,56 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <p>
-          Nome do usuário:{" "}
-          <input
-            name="username"
-            value={user.username}
-            onChange={handleChange}
-          />
-        </p>
-        <p>
-          Senha:{" "}
-          <input
-            type="password"
-            name="password"
-            value={user.password}
-            onChange={handleChange}
-          />
-        </p>
-        <p>
-          <button type="submit">Login</button>{" "}
-          <button type="button" onClick={() => router.replace("/")}>
-            Cancelar
-          </button>
-        </p>
-      </form>
+    <div className={styles.container}>
+      <div className={styles.card}>
+        {/* Corrigido o título de 'Sign Up' para 'Login' condizente com a tela */}
+        <h1 className={styles.title}>Acessar Conta</h1>
+        
+        <form onSubmit={handleSubmit}>
+          <div className={styles.inputGroup}>
+            <label className={styles.label} htmlFor="username">Nome do usuário</label>
+            <input
+              id="username"
+              name="username"
+              placeholder="Digite seu usuário"
+              value={user.username}
+              onChange={handleChange}
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label className={styles.label} htmlFor="password">Senha</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Digite sua senha"
+              value={user.password}
+              onChange={handleChange}
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.buttonGroup}>
+            <button 
+              type="submit" 
+              className={styles.buttonSubmit}
+              disabled={loginMutation.isPending}
+            >
+              {loginMutation.isPending ? "Autenticando..." : "Login"}
+            </button> 
+            
+            <button 
+              type="button" 
+              className={styles.buttonCancel} 
+              onClick={() => router.replace("/")}
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
