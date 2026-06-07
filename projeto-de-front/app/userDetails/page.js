@@ -4,6 +4,8 @@ import { currentUser, verificationEmailRequest } from "@/api";
 import { useUserStorage } from "@/zustand";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
+// Importando o CSS Module
+import styles from "./userdetails.module.css";
 
 export default function UserDetails() {
   const loggedUser = useUserStorage((state) => state.loggedUser);
@@ -21,32 +23,53 @@ export default function UserDetails() {
     },
     onError: (error) => {
       alert(
-        "Servidor indiponível no momento. Tente novamente mais tarde. Erro: " +
+        "Servidor indisponível no momento. Tente novamente mais tarde. Erro: " +
           error.message,
       );
     },
   });
 
   return (
-    <>
-      <Link href="/">Home</Link>
-      <br />
-      {isError && (
-        <>
-          <h2>Query Error: {error.message}</h2> <hr />{" "}
-        </>
-      )}
-      <h1>
-        Detalhes do Usuário {isLoading && "(carregando...)"}{" "}
-        {isFetching && "[buscando...]"}
-      </h1>
-      <hr />
-      <button onClick={() => mutation.mutate(loggedUser.email)}>
-        Verificar E-mail
-      </button>
-      <hr />
-      <pre>{JSON.stringify(data ?? {}, null, 2)}</pre>
-      <hr />
-    </>
+    <div className={styles.container}>
+      {/* Link superior para voltar à Home */}
+      <Link href="/" className={styles.backLink}>
+        ← Voltar para Home
+      </Link>
+
+      <div className={styles.card}>
+        {/* Banner de erro caso a query falhe */}
+        {isError && (
+          <div className={styles.errorBanner}>
+            <p className={styles.errorText}>Erro na busca: {error.message}</p>
+          </div>
+        )}
+
+        <h1 className={styles.title}>
+          Detalhes do Usuário
+          {isLoading && <span className={styles.statusText}>(carregando...)</span>}
+          {isFetching && <span className={styles.statusText}>[buscando...]</span>}
+        </h1>
+        <p className={styles.subtitle}>Dados do perfil salvos no banco de dados.</p>
+
+        {/* Caixa de ação para verificar o e-mail */}
+        <div className={styles.actionSection}>
+          <p className={styles.actionText}>
+            Seu e-mail ainda não foi validado? Peça uma nova confirmação.
+          </p>
+          <button 
+            onClick={() => mutation.mutate(loggedUser.email)}
+            disabled={mutation.isPending}
+            className={styles.buttonVerify}
+          >
+            {mutation.isPending ? "Enviando..." : "Verificar E-mail"}
+          </button>
+        </div>
+
+        {/* Bloco de dados JSON estilizado como console/terminal */}
+        <pre className={styles.jsonContainer}>
+          {JSON.stringify(data ?? {}, null, 2)}
+        </pre>
+      </div>
+    </div>
   );
 }
