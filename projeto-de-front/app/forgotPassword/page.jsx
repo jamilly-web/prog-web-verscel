@@ -5,10 +5,13 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useUserStorage } from "@/zustand";
+// 1. Importando o arquivo de estilos
+import styles from "./page.module.css"; 
 
 export default function ForgotPassword() {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  
   const mutation = useMutation({
     mutationFn: requestPasswordReset,
     onSuccess: (data) => {
@@ -35,19 +38,46 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div>
-      <h1>Password Reset</h1>
-      <form onSubmit={handleSubmit}>
-        <p>
-          e-mail: <input name="email" value={email} onChange={handleChange} />
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <h1 className={styles.title}>Password Reset</h1>
+        <p className={styles.description}>
+          Insira o seu e-mail abaixo para receber as instruções de recuperação.
         </p>
-        <p>
-          <button type="submit">Enviar</button>{" "}
-          <button type="button" onClick={() => router.replace("/")}>
-            Cancelar
-          </button>
-        </p>
-      </form>
+        
+        <form onSubmit={handleSubmit}>
+          <div className={styles.inputGroup}>
+            <label className={styles.label} htmlFor="email">E-mail</label>
+            <input 
+              id="email"
+              name="email" 
+              type="email"
+              placeholder="seu@email.com"
+              value={email} 
+              onChange={handleChange} 
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.buttonGroup}>
+            <button 
+              type="submit" 
+              className={styles.buttonSubmit}
+              disabled={mutation.isPending} // Desabilita o botão enquanto envia
+            >
+              {mutation.isPending ? "Enviando..." : "Enviar"}
+            </button>
+            
+            <button 
+              type="button" 
+              className={styles.buttonCancel} 
+              onClick={() => router.replace("/")}
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
