@@ -1,0 +1,80 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f3f4f6; /* Mantém o padrão cinza claro */
+  padding: 20px;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 400px;
+  text-align: center; /* Centraliza os textos e botões do logout */
+}
+
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.description {
+  font-size: 15px;
+  color: #4b5563;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.buttonConfirm {
+  width: 100%;
+  padding: 12px;
+  background-color: #ef4444; /* Vermelho para ações destrutivas/saída */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.buttonConfirm:hover {
+  background-color: #dc2626;
+}
+
+.buttonConfirm:disabled {
+  background-color: #fca5a5;
+  cursor: not-allowed;
+}
+
+.buttonCancel {
+  width: 100%;
+  padding: 12px;
+  background-color: transparent;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.buttonCancel:hover {
+  background-color: #f9fafb;
+  color: #1f2937;
+}
+
