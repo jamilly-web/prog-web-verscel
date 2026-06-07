@@ -6,6 +6,8 @@ import { useTaskFilter } from "@/zustand";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useState } from "react";
+// Importando o CSS Module
+import styles from "./tarefas.module.css";
 
 export default function ListaDeTarefas() {
   const [descricao, setDescricao] = useState("");
@@ -17,46 +19,47 @@ export default function ListaDeTarefas() {
     queryKey: ["tarefas"],
     queryFn: getTarefas,
   });
+  
   const addMutation = useMutation({
     mutationFn: addTarefa,
     onSuccess: () => {
-      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["tarefas"] });
       setDescricao("");
     },
     onError: (error) => {
       alert(
-        "Servidor indiponível no momento. Tente novamente mais tarde. Erro: " +
+        "Servidor indisponível no momento. Tente novamente mais tarde. Erro: " +
           error.message,
       );
     },
   });
+  
   const updateMutation = useMutation({
     mutationFn: updateTarefa,
     onSuccess: () => {
-      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["tarefas"] });
     },
     onError: (error) => {
       alert(
-        "Servidor indiponível no momento. Tente novamente mais tarde. Erro: " +
+        "Servidor indisponível no momento. Tente novamente mais tarde. Erro: " +
           error.message,
       );
     },
   });
+  
   const deleteMutation = useMutation({
     mutationFn: deleteTarefa,
     onSuccess: () => {
-      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["tarefas"] });
     },
     onError: (error) => {
       alert(
-        "Servidor indiponível no momento. Tente novamente mais tarde. Erro: " +
+        "Servidor indisponível no momento. Tente novamente mais tarde. Erro: " +
           error.message,
       );
     },
   });
+
   function handleAdicionarTarefa() {
     if (!descricao) {
       alert("Digite uma descrição");
@@ -77,58 +80,75 @@ export default function ListaDeTarefas() {
   }
 
   return (
-    <>
-      <Link href="/">Home</Link>
-      <br />
-      {isError && (
-        <>
-          <h2>Query Error: {error.message}</h2> <hr />{" "}
-        </>
-      )}
-      {addMutation.isError && (
-        <>
-          <h2>Mutation Error: {addMutation.error.message}</h2> <hr />{" "}
-        </>
-      )}
-      <h1>
-        Lista de Tarefas {isLoading && "(carregando...)"}{" "}
-        {isFetching && "[buscando...]"}
-      </h1>
-      <hr />
-      <p>
-        <input
-          placeholder="Digite a descrição da tarefa"
-          value={descricao}
-          onChange={(evt) => setDescricao(evt.target.value)}
-        />
-        <button
-          onClick={handleAdicionarTarefa}
-          disabled={addMutation.isPending}
-        >
-          Adicionar
-        </button>
-      </p>
-      <hr />
-      <p>
-        Ocultar as tarefas concluídas{" "}
-        <input
-          type="checkbox"
-          checked={filtrarConcluidas}
-          onChange={toggleFiltrarConcluidas}
-        />
-      </p>
-      <hr />
-      <ol>
-        {tarefas?.map((tarefa) => (
-          <Tarefa
-            key={tarefa.objectId}
-            tarefa={tarefa}
-            onUpdate={handleAtualizarTarefa}
-            onDelete={handleRemoverTarefa}
-            disabled={updateMutation.isPending || deleteMutation.isPending}
+    <div className={styles.container}>
+      {/* Link de voltar estilizado de forma discreta no topo */}
+      <Link href="/" className={styles.backLink}>
+        ← Voltar para Home
+      </Link>
+
+      <div className={styles.card}>
+        {/* Banners de erro limpos e elegantes caso algo falhe */}
+        {isError && (
+          <div className={styles.errorBanner}>
+            <p className={styles.errorText}>Erro na busca: {error.message}</p>
+          </div>
+        )}
+        {addMutation.isError && (
+          <div className={styles.errorBanner}>
+            <p className={styles.errorText}>Erro ao adicionar: {addMutation.error.message}</p>
+          </div>
+        )}
+
+        <h1 className={styles.title}>
+          Lista de Tarefas
+          {(isLoading || isFetching) && (
+            <span className={styles.statusText}>
+              {isLoading ? "carregando..." : "atualizando..."}
+            </span>
+          )}
+        </h1>
+
+        {/* Campo de input e botão alinhados lado a lado (Flexbox) */}
+        <div className={styles.inputGroup}>
+          <input
+            placeholder="Digite a descrição da tarefa"
+            value={descricao}
+            onChange={(evt) => setDescricao(evt.target.value)}
+            className={styles.input}
           />
-        ))}
-      </ol>
-    </>
+          <button
+            onClick={handleAdicionarTarefa}
+            disabled={addMutation.isPending}
+            className={styles.buttonAdd}
+          >
+            {addMutation.isPending ? "Aguarde..." : "Adicionar"}
+          </button>
+        </div>
+
+        {/* Seção de Filtro */}
+        <label className={styles.filterGroup}>
+          <input
+            type="checkbox"
+            checked={filtrarConcluidas}
+            onChange={toggleFiltrarConcluidas}
+            className={styles.checkbox}
+          />
+          <span>Ocultar as tarefas concluídas</span>
+        </label>
+
+        {/* Lista de tarefas limpa, estilizada via classe */}
+        <ul className={styles.taskList}>
+          {tarefas?.map((tarefa) => (
+            <Tarefa
+              key={tarefa.objectId}
+              tarefa={tarefa}
+              onUpdate={handleAtualizarTarefa}
+              onDelete={handleRemoverTarefa}
+              disabled={updateMutation.isPending || deleteMutation.isPending}
+            />
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }
